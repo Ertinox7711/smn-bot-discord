@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 const client = new Discord.Client();
 
-const prefix = '-s';
+const prefix = '-';
 
 client.once('ready', () => {
     console.log('SMN est disponible')
