@@ -1,61 +1,29 @@
-const Discord = require("discord.js");
+const { Client } = require("discord.js");
+// Importing this allows you to access the environment variables of the running node process
+require("dotenv").config();
 
+const client = new Client();
 
+// "process.env" accesses the environment variables for the running node process. PREFIX is the environment variable you defined in your .env file
+const prefix = process.env.PREFIX;
 
-
-
-client.once('ready', () => {
-    console.log('SMN est disponible')
-});
-
-
-
-const { REST, Routes } = require('discord.js');
-
-const commands = [
-  {
-    name: ping,
-    description: pong,
-  },
-];
-
-const rest = new REST({ version: '10' }).setToken(MTAzMzkwMzA2MDA5MjcxOTE1NA.GWUaQl.Yj8whUdtr8HANFokUx4TUQW0ffY_a9AffpYMik);
-
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
-
-    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
-  }
-})();
-
-
-
-const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+client.on("messageCreate", message => {
 
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
+ 
+  if (message.author.bot) return;
+  if (message.content.indexOf(prefix.length) !== 0) return;
+
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  if (command === "ping") {
+    message.reply("Pong!");
   }
 });
 
 
-
-
-
-
-
-
-
-client.login(process.env.TOKEN);
+client.login();
